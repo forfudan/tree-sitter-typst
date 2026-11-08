@@ -1,0 +1,312 @@
+================================================================================
+A whole document: a template with set and show rules, and the markup it styles
+================================================================================
+
+#import "@preview/tablex:0.1.0": tablex, cellx as cell
+#import "theme.typ": *
+
+// A small report template, written to exercise the grammar.
+#let report(title: "", authors: (), body) = {
+  set document(title: title, author: authors)
+  set page(
+    paper: "a4",
+    margin: (x: 2.5cm, y: 3cm), // generous margins
+    numbering: "1",
+  )
+  set text(font: ("Libertinus Serif", "Noto Serif CJK SC"), lang: "zh")
+  show heading.where(level: 1): it => {
+    pagebreak(weak: true)
+    block(below: 1em)[
+      #set text(size: 18pt)
+      #smallcaps(it.body)
+    ]
+  }
+  show link: underline
+  show "排版": word => text(fill: blue, word)
+
+  align(center, text(17pt, strong(title)))
+  for (i, name) in authors.enumerate() {
+    if i > 0 [, ] else [By ]
+    name
+  }
+  body
+}
+
+#show: report.with(
+  title: "排版笔记",
+  authors: ("甲", "乙"), /* two authors */
+)
+
+= 引言 <intro>
+本文讨论*排版*与_格式_。See @intro and @fig:grid[Figure].
+
+- 第一项
+  - 嵌套项
++ numbered
+/ 术语: 解释
+
+#figure(
+  grid(columns: 2, gutter: 4pt, [A], [B]),
+  caption: [A grid],
+) <fig:grid>
+
+$ e^(i pi) + 1 = 0 quad "and" quad sum_(k=1)^n k = (n(n+1))/2 $
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (module_import
+      (string)
+      (identifier)
+      (renamed_import_item
+        (identifier)
+        (identifier))))
+  (code
+    (module_import
+      (string)))
+  (parbreak)
+  (line_comment)
+  (code
+    (let_binding
+      (identifier)
+      (parameters
+        (named
+          (identifier)
+          (string))
+        (named
+          (identifier)
+          (array))
+        (identifier))
+      (code_block
+        (set_rule
+          (identifier)
+          (arguments
+            (named
+              (identifier)
+              (identifier))
+            (named
+              (identifier)
+              (identifier))))
+        (set_rule
+          (identifier)
+          (arguments
+            (named
+              (identifier)
+              (string))
+            (named
+              (identifier)
+              (dict
+                (named
+                  (identifier)
+                  (numeric))
+                (named
+                  (identifier)
+                  (numeric))))
+            (line_comment)
+            (named
+              (identifier)
+              (string))))
+        (set_rule
+          (identifier)
+          (arguments
+            (named
+              (identifier)
+              (array
+                (string)
+                (string)))
+            (named
+              (identifier)
+              (string))))
+        (show_rule
+          (call
+            (field_access
+              (identifier)
+              (identifier))
+            (arguments
+              (named
+                (identifier)
+                (int))))
+          (closure
+            (identifier)
+            (code_block
+              (call
+                (identifier)
+                (arguments
+                  (named
+                    (identifier)
+                    (bool))))
+              (call
+                (identifier)
+                (arguments
+                  (named
+                    (identifier)
+                    (numeric))
+                  (content_block
+                    (code
+                      (set_rule
+                        (identifier)
+                        (arguments
+                          (named
+                            (identifier)
+                            (numeric)))))
+                    (code
+                      (call
+                        (identifier)
+                        (arguments
+                          (field_access
+                            (identifier)
+                            (identifier)))))))))))
+        (show_rule
+          (identifier)
+          (identifier))
+        (show_rule
+          (string)
+          (closure
+            (identifier)
+            (call
+              (identifier)
+              (arguments
+                (named
+                  (identifier)
+                  (identifier))
+                (identifier)))))
+        (call
+          (identifier)
+          (arguments
+            (identifier)
+            (call
+              (identifier)
+              (arguments
+                (numeric)
+                (call
+                  (identifier)
+                  (arguments
+                    (identifier)))))))
+        (for_loop
+          (array
+            (identifier)
+            (identifier))
+          (call
+            (field_access
+              (identifier)
+              (identifier))
+            (arguments))
+          (code_block
+            (conditional
+              (binary
+                (identifier)
+                (int))
+              (content_block
+                (text))
+              (content_block
+                (text)))
+            (identifier)))
+        (identifier))))
+  (parbreak)
+  (code
+    (show_rule
+      (call
+        (field_access
+          (identifier)
+          (identifier))
+        (arguments
+          (named
+            (identifier)
+            (string))
+          (named
+            (identifier)
+            (array
+              (string)
+              (string)))
+          (block_comment)))))
+  (parbreak)
+  (heading
+    (heading_marker)
+    (text))
+  (label)
+  (text)
+  (strong
+    (text))
+  (text)
+  (emph
+    (text))
+  (text)
+  (reference
+    (ref_marker))
+  (text)
+  (reference
+    (ref_marker)
+    (content_block
+      (text)))
+  (text)
+  (parbreak)
+  (list_item
+    (list_marker)
+    (text)
+    (list_item
+      (list_marker)
+      (text)))
+  (enum_item
+    (enum_marker)
+    (text))
+  (term_item
+    (term_marker)
+    (term
+      (text))
+    (text))
+  (parbreak)
+  (code
+    (call
+      (identifier)
+      (arguments
+        (call
+          (identifier)
+          (arguments
+            (named
+              (identifier)
+              (int))
+            (named
+              (identifier)
+              (numeric))
+            (content_block
+              (text))
+            (content_block
+              (text))))
+        (named
+          (identifier)
+          (content_block
+            (text))))))
+  (label)
+  (parbreak)
+  (equation
+    (math
+      (math_attach
+        (math_letter)
+        (math_delimited
+          (math_letter)
+          (math_ident)))
+      (math_symbol)
+      (math_number)
+      (math_symbol)
+      (math_number)
+      (math_ident)
+      (string)
+      (math_ident)
+      (math_attach
+        (math_ident)
+        (math_delimited
+          (math_letter)
+          (math_symbol)
+          (math_number))
+        (math_letter))
+      (math_letter)
+      (math_symbol)
+      (math_frac
+        (math_delimited
+          (math_letter)
+          (math_delimited
+            (math_letter)
+            (math_symbol)
+            (math_number)))
+        (math_number)))))
