@@ -97,6 +97,7 @@ enum TokenType {
   STRING_CONTENT,
   LINE_END,
   UNCLOSED,
+  MATH_SPREAD_DOTS,
   ERROR_SENTINEL,
 };
 
@@ -625,13 +626,29 @@ static bool scan_code(Scanner *s, TSLexer *lexer, const bool *valid) {
   if (c == '`' && (valid[RAW_OPEN_INLINE] || valid[RAW_OPEN_BLOCK])) {
     return scan_raw_open(s, lexer, valid);
   }
+  if (valid[MATH_SPREAD_DOTS] && c == '.') {
+    advance(lexer);
+    if (lexer->lookahead != '.') return false;
+    advance(lexer);
+    lexer->mark_end(lexer);
+    int32_t next = lexer->lookahead;
+    if (lexer->eof(lexer) || is_space(next) || next == '.' || next == ',' || next == ';' ||
+        next == ')' || next == '$' || next == '/') {
+      return false;
+    }
+    return emit(s, lexer, MATH_SPREAD_DOTS);
+  }
   if (valid[MATH_ARG_NAME] && is_id_start(c)) {
     // `delim: "["` in a math call; not `a := b` or `a ::= b`.
     while (is_id_continue(lexer->lookahead)) advance(lexer);
     lexer->mark_end(lexer);
     if (lexer->lookahead != ':') return false;
     advance(lexer);
-    if (lexer->lookahead == '=' || lexer->lookahead == ':') return false;
+    if (lexer->lookahead == '=') return false;  // `a := b`
+    if (lexer->lookahead == ':') {
+      advance(lexer);
+      if (lexer->lookahead == '=') return false;  // `a ::= b`; `m::` names `m`
+    }
     return emit(s, lexer, MATH_ARG_NAME);
   }
   if (c == '/' && valid[BLOCK_COMMENT]) {

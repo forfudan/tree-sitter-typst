@@ -23,6 +23,12 @@ use std::io::{BufRead, Write};
 /// What is compared, by name: Typst's kinds on one side, the grammar's on the
 /// other. A name maps to several kinds where one side splits what the other
 /// keeps together.
+///
+/// Left out because the trees differ by design, not by mistake: attachments
+/// (`x^a^b` is one `math_attach` here and two nested in Typst), delimited math
+/// groups (Typst unwraps the parentheses of a fraction's operands), arrays,
+/// dictionaries and parenthesized expressions (Typst parses a parameter list or
+/// a destructuring pattern as such), and text (split at other places).
 const MEASURES: &[(&str, &[&str], &[&str])] = &[
     ("heading", &["Heading"], &["heading"]),
     ("list_item", &["ListItem"], &["list_item"]),
@@ -63,6 +69,16 @@ const MEASURES: &[(&str, &[&str], &[&str])] = &[
     ("math_frac", &["MathFrac"], &["math_frac"]),
     ("math_root", &["MathRoot"], &["math_root"]),
     ("align_point", &["MathAlignPoint"], &["align_point"]),
+    ("math_shorthand", &["MathShorthand"], &["math_shorthand", "[|", "|]"]),
+    ("primes", &["MathPrimes"], &["primes"]),
+    ("raw_lang", &["RawLang"], &["raw_lang"]),
+    ("named", &["Named", "Keyed"], &["named"]),
+    ("spread", &["Spread"], &["spread"]),
+    ("identifier", &["Ident"], &["identifier"]),
+    ("break", &["LoopBreak"], &["break_statement"]),
+    ("continue", &["LoopContinue"], &["continue_statement"]),
+    ("return", &["FuncReturn"], &["return_statement"]),
+    ("literal", &["Bool", "None", "Auto"], &["bool", "none", "auto"]),
 ];
 
 /// Every node of every kind, as byte ranges.

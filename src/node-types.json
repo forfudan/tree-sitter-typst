@@ -1493,6 +1493,10 @@
           "named": true
         },
         {
+          "type": "primes",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         }
@@ -1568,6 +1572,14 @@
           "named": true
         },
         {
+          "type": "primes",
+          "named": true
+        },
+        {
+          "type": "spread",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         }
@@ -1619,6 +1631,10 @@
             "named": true
           },
           {
+            "type": "primes",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           }
@@ -1666,6 +1682,10 @@
           },
           {
             "type": "math_symbol",
+            "named": true
+          },
+          {
+            "type": "primes",
             "named": true
           },
           {
@@ -1726,6 +1746,10 @@
           },
           {
             "type": "math_symbol",
+            "named": true
+          },
+          {
+            "type": "primes",
             "named": true
           },
           {
@@ -1864,6 +1888,10 @@
           "named": true
         },
         {
+          "type": "primes",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         }
@@ -1920,6 +1948,10 @@
           },
           {
             "type": "math_symbol",
+            "named": true
+          },
+          {
+            "type": "primes",
             "named": true
           },
           {
@@ -1981,6 +2013,10 @@
             "named": true
           },
           {
+            "type": "primes",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           }
@@ -2038,6 +2074,10 @@
           },
           {
             "type": "math_symbol",
+            "named": true
+          },
+          {
+            "type": "primes",
             "named": true
           },
           {
@@ -2206,6 +2246,10 @@
         },
         {
           "type": "math_symbol",
+          "named": true
+        },
+        {
+          "type": "primes",
           "named": true
         },
         {
@@ -2527,6 +2571,76 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "align_point",
+          "named": true
+        },
+        {
+          "type": "code",
+          "named": true
+        },
+        {
+          "type": "escape",
+          "named": true
+        },
+        {
+          "type": "linebreak",
+          "named": true
+        },
+        {
+          "type": "math_attach",
+          "named": true
+        },
+        {
+          "type": "math_call",
+          "named": true
+        },
+        {
+          "type": "math_delimited",
+          "named": true
+        },
+        {
+          "type": "math_frac",
+          "named": true
+        },
+        {
+          "type": "math_ident",
+          "named": true
+        },
+        {
+          "type": "math_letter",
+          "named": true
+        },
+        {
+          "type": "math_number",
+          "named": true
+        },
+        {
+          "type": "math_root",
+          "named": true
+        },
+        {
+          "type": "math_shorthand",
+          "named": true
+        },
+        {
+          "type": "math_symbol",
+          "named": true
+        },
+        {
+          "type": "primes",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
     }
   },
   {

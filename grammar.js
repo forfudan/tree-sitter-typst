@@ -123,6 +123,7 @@ module.exports = grammar({
     $._string_content, // so that `"//"` is a string and not a comment
     $._line_end, // ends a statement after a hash: a line break, `]` or the end
     $._unclosed, // where Typst gives up on an unclosed `*` or `_`
+    $._math_spread_dots, // `..` opening a math argument, when something follows
     $._error_sentinel, // never valid in a real state: tells the scanner it is recovering
   ],
 
@@ -585,6 +586,7 @@ module.exports = grammar({
       ';',
       alias(')', $.math_symbol),
       alias($._math_close_char, $.math_symbol),
+      alias('|]', $.math_shorthand),
     ),
 
 
@@ -592,7 +594,11 @@ module.exports = grammar({
     _math_inner_item: $ => choice($._math_common, ',', ';'),
 
     // Inside math arguments `,` and `;` separate and `)` ends the list.
-    _math_arg_item: $ => choice($._math_common, alias($._math_close_char, $.math_symbol)),
+    _math_arg_item: $ => choice(
+      $._math_common,
+      alias($._math_close_char, $.math_symbol),
+      alias('|]', $.math_shorthand),
+    ),
 
 
     _math_common: $ => choice(
@@ -648,6 +654,7 @@ module.exports = grammar({
     _math_primary: $ => choice(
       $._math_juxtaposed,
       $._math_factorial,
+      $.primes,
       $.math_letter,
       $.math_ident,
       $.math_number,
@@ -700,21 +707,34 @@ module.exports = grammar({
       field('arguments', $.math_arguments),
     )),
 
+    // Arguments are separated by `,` and rows by `;`, and any of them may be
+    // empty. A name or a spread is only seen at the start of one.
     math_arguments: $ => seq(
       alias($._call_paren, '('),
-      repeat(choice(',', ';', $._math_arg_item, alias($._math_named, $.named))),
+      optional($._math_arg),
+      repeat(seq(choice(',', ';'), optional($._math_arg))),
       ')',
     ),
 
-    _math_named: $ => prec.right(seq(
+    _math_arg: $ => choice(
+      repeat1($._math_arg_item),
+      alias($._math_named, $.named),
+      alias($._math_spread, $.spread),
+    ),
+
+    _math_named: $ => seq(
       field('name', alias($._math_arg_name, $.identifier)),
       ':',
       repeat1($._math_arg_item),
-    )),
+    ),
 
     // `#x` inside math. Its calls and field accesses take only the scanner's
     // tokens, which come without a space before them: a plain `.` here would
     // make `$#x.$` a field access missing its name.
+    // `mat(..#rows)`: an argument that starts with `..` is spread, unless
+    // nothing follows the dots (`maybe_math_spread_arg` in `lexer.rs`).
+    _math_spread: $ => seq(alias($._math_spread_dots, '..'), repeat1($._math_arg_item)),
+
     _math_code: $ => seq('#', choice($._math_postfix, alias($._math_contextual, $.contextual))),
 
     _math_postfix: $ => choice(
