@@ -16,8 +16,8 @@ ends a list item at the first line indented no deeper than the marker.
 
 This grammar is written against that lexer and parser, `crates/typst-syntax` in
 [typst/typst](https://github.com/typst/typst) (`lexer.rs`, `parser.rs`, `set.rs`,
-`kind.rs`), version 0.15.1, and checked against Typst written by the people who
-write Typst: the compiler's test suite and documentation, and the newest version
+`kind.rs`) as of `84cca40` (2026-10-28, version 0.15.1 with unreleased changes),
+and checked against Typst written by the people who write Typst: the compiler's test suite and documentation, and the newest version
 of every package in [typst/packages](https://github.com/typst/packages).
 
 Markup is lexed entirely by the external scanner (`src/scanner.c`), and so is
@@ -84,18 +84,19 @@ it rejects are those deliberate errors.
 
 No ERROR node is not the same as being right: a heading taken for text parses
 fine. So the judge also parses every file it accepts into Typst's own tree and
-compares it with this grammar's, on 39 kinds of node — headings, items, strong,
+compares it with this grammar's, on 49 kinds of node — headings, items, strong,
 raw, calls, rules, closures, blocks, operators, fractions and the rest:
 
 ```
-17854 files Typst accepts, compared on 39 kinds of node:
+17854 files Typst accepts, compared on 49 kinds of node:
   17854 agree on how many of each (100.00%)
   17849 also on where each starts (99.97%)
-  17844 also on where each ends (99.94%)
+  17843 also on where each ends (99.94%)
 ```
 
-The ten files that differ are listed by `--why`; they are the deliberate
-differences below. Read a fall in any of these numbers, not their distance from
+The eleven files that differ are listed by `--why`; they are the deliberate
+differences below. The kinds left out of the comparison are left out because
+the trees differ by design (`script/typst-check/src/main.rs` says which). Read a fall in any of these numbers, not their distance from
 100.
 
 ## Where it differs from Typst on purpose
@@ -105,9 +106,10 @@ differences below. Read a fall in any of these numbers, not their distance from
   that look alike are parsed alike (Typst backtracks to tell them apart), so
   `(a, b: 1) => …` has an `array` for parameters. `x_a^b` is one `math_attach`,
   and so is `x^a^b`, where Typst nests the second.
-- **A block comment after a heading's text** (`= h /**/`) and comment lines
-  less indented than the list item around them end the structure a little
-  later or earlier than Typst ends it; they are the only `ends` differences.
+- **A comment right after a heading's or an item's text** (`= h/**/`,
+  `- a ~// note`) and comment lines less indented than the list item around
+  them end the structure a little later or earlier than Typst ends it; they
+  are the only `ends` differences.
 - **A few math groupings**: Typst treats a symbol straight against `(` as one
   operand (`℘()/2`); here only letters, strings and escapes are.
 - **An unclosed `*` or `_` is not an error.** Typst gives up on it at the
