@@ -2,7 +2,7 @@
   "name": "tree-sitter-typst",
   "version": "0.1.0",
   "description": "Typst grammar for tree-sitter",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "bindings/node",
   "files": ["grammar.js", "src/**", "bindings/node/**", "queries/**"],
   "devDependencies": {

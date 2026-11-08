@@ -158,6 +158,6 @@ tree-sitter-typst = { git = "https://github.com/forfudan/tree-sitter-typst", tag
 
 ## Licence
 
-MIT. No code is taken from any other Typst grammar; the corpus and the reference
+Apache-2.0, as tree-sitter-mojo. No code is taken from any other Typst grammar; the corpus and the reference
 parser are Typst's and its package authors', under their own licences, and are
 read, not copied.

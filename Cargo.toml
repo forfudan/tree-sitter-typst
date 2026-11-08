@@ -2,7 +2,7 @@
 name = "tree-sitter-typst"
 description = "Typst grammar for tree-sitter"
 version = "0.1.0"
-license = "MIT"
+license = "Apache-2.0"
 readme = "README.md"
 keywords = ["incremental", "parsing", "tree-sitter", "typst"]
 categories = ["parser-implementations", "text-editors"]
