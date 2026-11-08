@@ -10,7 +10,7 @@
       "injections": "queries/injections.scm",
       "locals": "queries/locals.scm",
       "tags": "queries/tags.scm",
-      "injection-regex": "^(typ|typst)$"
+      "injection-regex": "^(typ|typc|typst)$"
     }
   ],
   "metadata": {

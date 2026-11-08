@@ -125,6 +125,7 @@ differences below. Read a fall in any of these numbers, not their distance from
 | `src/parser.c` | generated, and **committed**, so everything downstream builds without node or the CLI |
 | `queries/` | highlights, injections, locals, tags |
 | `test/corpus/` | `tree-sitter test` cases. The baseline says how far the grammar reaches; these pin the places it has already been wrong. Warning: `-u` rewrites **every** corpus file it reads |
+| `test/highlight/` | highlight assertions, run by the same `tree-sitter test` |
 | `script/baseline.sh` | the numbers above |
 | `script/typst-check/` | Typst's parser as the judge: `ok`/`rejected` per file, `--compare` for the trees, `--where KIND FILE` to find the node that differs |
 | `bindings/rust/` | the crate: `LANGUAGE`, the four queries and `NODE_TYPES` |
