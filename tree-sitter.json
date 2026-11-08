@@ -5,9 +5,11 @@
       "camelcase": "Typst",
       "scope": "source.typst",
       "path": ".",
-      "file-types": [
-        "typ"
-      ],
+      "file-types": ["typ"],
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm",
+      "locals": "queries/locals.scm",
+      "tags": "queries/tags.scm",
       "injection-regex": "^(typ|typst)$"
     }
   ],
