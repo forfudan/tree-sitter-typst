@@ -1,0 +1,8 @@
+/node_modules/
+/target/
+/build/
+*.log
+Cargo.lock
+
+# src/parser.c is generated but committed, as in every tree-sitter grammar:
+# downstream builds compile it directly, without node or tree-sitter-cli.

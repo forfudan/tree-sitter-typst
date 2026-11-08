@@ -1,0 +1,148 @@
+================================================================================
+Set rules, with a condition and a dotted target
+================================================================================
+
+#set text(font: "New Computer Modern", size: 11pt)
+#set heading(numbering: "1.1") if numbered
+#set page.foo(x: 1)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (set_rule
+      (identifier)
+      (arguments
+        (named
+          (identifier)
+          (string))
+        (named
+          (identifier)
+          (numeric)))))
+  (code
+    (set_rule
+      (identifier)
+      (arguments
+        (named
+          (identifier)
+          (string)))
+      (identifier)))
+  (code
+    (set_rule
+      (field_access
+        (identifier)
+        (identifier))
+      (arguments
+        (named
+          (identifier)
+          (int))))))
+
+================================================================================
+Show rules with selectors, where and closures
+================================================================================
+
+#show heading.where(level: 1): it => block(below: 1em)[
+  #set text(size: 14pt)
+  #it.body
+]
+#show "Typst": name => smallcaps(name)
+#show <note>: set text(fill: gray)
+#show: doc => columns(2, doc)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (show_rule
+      (call
+        (field_access
+          (identifier)
+          (identifier))
+        (arguments
+          (named
+            (identifier)
+            (int))))
+      (closure
+        (identifier)
+        (call
+          (identifier)
+          (arguments
+            (named
+              (identifier)
+              (numeric))
+            (content_block
+              (code
+                (set_rule
+                  (identifier)
+                  (arguments
+                    (named
+                      (identifier)
+                      (numeric)))))
+              (code
+                (field_access
+                  (identifier)
+                  (identifier)))))))))
+  (code
+    (show_rule
+      (string)
+      (closure
+        (identifier)
+        (call
+          (identifier)
+          (arguments
+            (identifier))))))
+  (code
+    (show_rule
+      (label)
+      (set_rule
+        (identifier)
+        (arguments
+          (named
+            (identifier)
+            (identifier))))))
+  (code
+    (show_rule
+      (closure
+        (identifier)
+        (call
+          (identifier)
+          (arguments
+            (int)
+            (identifier)))))))
+
+================================================================================
+Imports of packages and items
+================================================================================
+
+#import "@preview/cetz:0.3.1": canvas, draw as d
+#import "@preview/fletcher:0.5.2" as fl: *
+#import "lib.typ": (
+  a,
+  b.c,
+)
+#include "chapter.typ"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (module_import
+      (string)
+      (identifier)
+      (renamed_import_item
+        (identifier)
+        (identifier))))
+  (code
+    (module_import
+      (string)
+      (identifier)))
+  (code
+    (module_import
+      (string)
+      (identifier)
+      (import_path
+        (identifier)
+        (identifier))))
+  (code
+    (module_include
+      (string))))
