@@ -17,8 +17,9 @@ ends a list item at the first line indented no deeper than the marker.
 This grammar is written against that lexer and parser, `crates/typst-syntax` in
 [typst/typst](https://github.com/typst/typst) (`lexer.rs`, `parser.rs`, `set.rs`,
 `kind.rs`) as of `84cca40` (2026-10-28, version 0.15.1 with unreleased changes),
-and checked against Typst written by the people who write Typst: the compiler's test suite and documentation, and the newest version
-of every package in [typst/packages](https://github.com/typst/packages).
+and checked against Typst written by the people who write Typst: the compiler's
+test suite and documentation, and the newest version of every package in
+[typst/packages](https://github.com/typst/packages).
 
 Markup is lexed entirely by the external scanner (`src/scanner.c`), and so is
 everything in code that whitespace decides: `#f(x)` calls and `#f (x)` is a name
@@ -45,7 +46,7 @@ starts with `.` or `else`.
   `//` and nested `/* */` comments anywhere.
 - **Math**: fractions, sub- and superscripts and primes, roots, alignment
   points, line breaks, shorthands, symbols with fields (`arrow.r.long`), calls
-  with `,`/`;` arguments and named arguments, delimiters matched as Typst
+  with `,`/`;` arguments, named and spread arguments, delimiters matched as Typst
   matches them (any opening with any closing, unclosed groups allowed), strings,
   escapes and code with `#`.
 
@@ -96,8 +97,13 @@ raw, calls, rules, closures, blocks, operators, fractions and the rest:
 
 The eleven files that differ are listed by `--why`; they are the deliberate
 differences below. The kinds left out of the comparison are left out because
-the trees differ by design (`script/typst-check/src/main.rs` says which). Read a fall in any of these numbers, not their distance from
-100.
+the trees differ by design (`script/typst-check/src/main.rs` says which).
+Read a fall in any of these numbers, not their distance from 100.
+
+Warning: **the judge is the published typst-syntax 0.15.1, the grammar follows
+`main`.** Where `main` has moved since (it splits math text into letters,
+numbers and symbols, which 0.15.1 calls `MathText`), the comparison leaves the
+kind out rather than measure the difference between two Typsts.
 
 ## Where it differs from Typst on purpose
 
