@@ -132,3 +132,26 @@ Smart quotes stand alone so that a minus after them is a minus
   (text)
   (text)
   (text))
+
+================================================================================
+An unclosed strong ends at the paragraph break, an emphasis at its bracket
+================================================================================
+
+*typing in progress
+
+next paragraph #box[_open]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (strong
+    (text))
+  (parbreak)
+  (text)
+  (code
+    (call
+      (identifier)
+      (arguments
+        (content_block
+          (emph
+            (text)))))))

@@ -93,6 +93,7 @@ enum TokenType {
   TRAILING_DOT_FLOAT,
   STRING_CONTENT,
   LINE_END,
+  UNCLOSED,
   ERROR_SENTINEL,
 };
 
@@ -309,6 +310,8 @@ static bool emit_zero(TSLexer *lexer, enum TokenType type) {
 // `col` is the line's column when the caller already had to look; -1 asks here.
 static bool close_structure(Scanner *s, TSLexer *lexer, const bool *valid, bool line_start,
                             bool at_end, int64_t col) {
+  // A strong or emphasis still open where its block ends.
+  if (valid[UNCLOSED] && at_end) return emit_zero(lexer, UNCLOSED);
   if (valid[ITEM_END]) {
     if (s->columns.size == 0) {
       if (at_end || line_start) return emit_zero(lexer, ITEM_END);
@@ -810,6 +813,8 @@ static bool scan_markup(Scanner *s, TSLexer *lexer, const bool *valid) {
     // put the closing after the comment, inside the item; a comment line less
     // indented than the item's text it sits in is rarer than a term item
     // straight after a list item, which waiting got wrong.
+    // A strong or emphasis still open at a paragraph break.
+    if (newlines >= 2 && valid[UNCLOSED]) return emit_zero(lexer, UNCLOSED);
     if (newlines > 0 || end) {
       if (close_structure(s, lexer, valid, newlines > 0 || s->line_start, end, -1)) return true;
     } else if (lexer->lookahead == '/' && !s->block_start && !s->line_start &&
