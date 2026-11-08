@@ -71,10 +71,10 @@ out. On typst/typst at `84cca40` (2026-10-28) and typst/packages at the newest
 version of each of 1741 packages:
 
 ```
-tests        3822 files,   153 rejected by Typst; of the   3669 Typst accepts    0 fail: 100.00%   (all files:  97.59%)
+tests        3822 files,   153 rejected by Typst; of the   3669 Typst accepts    0 fail: 100.00%   (all files:  97.70%)
 repo           75 files,     0 rejected by Typst; of the     75 Typst accepts    0 fail: 100.00%   (all files: 100.00%)
 packages    14115 files,     5 rejected by Typst; of the  14110 Typst accepts    0 fail: 100.00%   (all files: 100.00%)
-total       18012 files,   158 rejected by Typst; of the  17854 Typst accepts    0 fail: 100.00%   (all files:  99.49%)
+total       18012 files,   158 rejected by Typst; of the  17854 Typst accepts    0 fail: 100.00%   (all files:  99.51%)
 ```
 
 The test suite is cut up first: a file there holds dozens of tests under
@@ -110,8 +110,10 @@ differences below. Read a fall in any of these numbers, not their distance from
   later or earlier than Typst ends it; they are the only `ends` differences.
 - **A few math groupings**: Typst treats a symbol straight against `(` as one
   operand (`℘()/2`); here only letters, strings and escapes are.
-- **Error recovery is tree-sitter's.** An unclosed `*` runs to the end of the
-  file instead of stopping at the paragraph break, as Typst's does.
+- **An unclosed `*` or `_` is not an error.** Typst gives up on it at the
+  paragraph break, the `]` of its block or the end, and reports it; here it
+  simply ends there, so that typing a `*` does not turn the rest of the
+  document bold. Other errors are tree-sitter's to recover from.
 
 ## Layout
 

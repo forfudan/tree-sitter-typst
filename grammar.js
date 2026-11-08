@@ -122,6 +122,7 @@ module.exports = grammar({
     $._trailing_dot_float, // `1.`: a float only when no method name follows
     $._string_content, // so that `"//"` is a string and not a comment
     $._line_end, // ends a statement after a hash: a line break, `]` or the end
+    $._unclosed, // where Typst gives up on an unclosed `*` or `_`
     $._error_sentinel, // never valid in a real state: tells the scanner it is recovering
   ],
 
@@ -156,16 +157,21 @@ module.exports = grammar({
       $._text_bracket,
     ),
 
+    // Typst gives up on a strong or emphasis that is still open at a paragraph
+    // break, at the `]` of its block or at the end (`AtNewline::StopParBreak`)
+    // and reports it. Here it simply ends there, so that typing a `*` does not
+    // turn the rest of the document bold until its partner is typed. Files
+    // Typst accepts never get this far.
     strong: $ => seq(
       alias($._star, '*'),
       repeat(choice($._inline_common, $.emph)),
-      alias($._star, '*'),
+      choice(alias($._star, '*'), $._unclosed),
     ),
 
     emph: $ => seq(
       alias($._underscore, '_'),
       repeat(choice($._inline_common, $.strong)),
-      alias($._underscore, '_'),
+      choice(alias($._underscore, '_'), $._unclosed),
     ),
 
     // A `[` in markup is text, and so is the `]` that matches it: Typst counts
