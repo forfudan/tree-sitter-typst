@@ -39,8 +39,10 @@
 
 ; ---- code: names in particular places ----------------------------------------
 
-(field_access field: (identifier) @variable.other.member)
-(dict (named name: (identifier) @variable.other.member))
+; Warning: **a field has no capture of its own.** Typst draws a field in the
+; colour of the name before its dot (`highlight_ident` in typst-syntax), so
+; `it.body` and a dictionary's keys are plain names, as `(identifier)` above
+; makes them; only a field that is called or shown is a function, below.
 (arguments (named name: (identifier) @variable.parameter))
 
 (parameters (identifier) @variable.parameter)
@@ -63,8 +65,12 @@
 (call function: (field_access field: (identifier) @function.method))
 (set_rule target: (identifier) @function)
 (set_rule target: (field_access field: (identifier) @function))
+; A show rule's name right before or after its colon is a function, as Typst
+; has it: `heading` in `show heading:`, `caption` in `show figure.caption:`,
+; `template` in `show: template`. In `show figure.where(…)` only the call is.
 (show_rule selector: (identifier) @function)
-(show_rule selector: (call function: (field_access object: (identifier) @function)))
+(show_rule selector: (field_access field: (identifier) @function))
+(show_rule transform: (identifier) @function)
 
 ; ---- markup --------------------------------------------------------------------
 

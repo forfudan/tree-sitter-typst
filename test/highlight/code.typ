@@ -17,10 +17,20 @@
 
 #show heading.where(level: 1): it => it.body
 //^ keyword
-//    ^ function
+//    ^ variable
 //            ^ function.method
 //                             ^ variable.parameter
-//                                      ^ variable.other.member
+//                                      ^ variable
+
+#show figure.caption: emph
+//    ^ variable
+//           ^ function
+
+#show: template
+//     ^ function
+
+#let page = (top: 1cm)
+//           ^ variable
 
 #import "@preview/cetz:0.3.1": canvas
 //^ keyword.control.import
