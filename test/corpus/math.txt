@@ -1,0 +1,174 @@
+================================================================================
+Fractions, attachments and roots
+================================================================================
+
+$ a/b + x_1^2 + sum_(i=0)^n i + √(x+1) + n! $
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (equation
+    (math
+      (math_frac
+        (math_letter)
+        (math_letter))
+      (math_symbol)
+      (math_attach
+        (math_letter)
+        (math_number)
+        (math_number))
+      (math_symbol)
+      (math_attach
+        (math_ident)
+        (math_delimited
+          (math_letter)
+          (math_symbol)
+          (math_number))
+        (math_letter))
+      (math_letter)
+      (math_symbol)
+      (math_root
+        (root_sign)
+        (math_delimited
+          (math_letter)
+          (math_symbol)
+          (math_number)))
+      (math_symbol)
+      (math_letter)
+      (math_symbol))))
+
+================================================================================
+Alignment points and line breaks
+================================================================================
+
+$ x &= 1 \
+  &= 2 $
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (equation
+    (math
+      (math_letter)
+      (align_point)
+      (math_symbol)
+      (math_number)
+      (linebreak)
+      (align_point)
+      (math_symbol)
+      (math_number))))
+
+================================================================================
+Shorthands, field access and calls with named arguments
+================================================================================
+
+$ a -> b != c <= d, arrow.r.long, vec(1, 2, delim: "["), mat(1, 2; 3, 4) $
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (equation
+    (math
+      (math_letter)
+      (math_shorthand)
+      (math_letter)
+      (math_shorthand)
+      (math_letter)
+      (math_shorthand)
+      (math_letter)
+      (math_ident)
+      (math_call
+        (math_ident)
+        (math_arguments
+          (math_number)
+          (math_number)
+          (named
+            (identifier)
+            (string))))
+      (math_call
+        (math_ident)
+        (math_arguments
+          (math_number)
+          (math_number)
+          (math_number)
+          (math_number))))))
+
+================================================================================
+Delimiters may be mismatched
+================================================================================
+
+$[0, 1) union (a$
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (equation
+    (math
+      (math_delimited
+        (math_delimiter)
+        (math_number)
+        (math_number))
+      (math_ident)
+      (math_delimited
+        (math_letter)))))
+
+================================================================================
+Code inside math
+================================================================================
+
+$ #x + #f(y).z + #calc.pi $
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (equation
+    (math
+      (code
+        (identifier))
+      (math_symbol)
+      (code
+        (field_access
+          (call
+            (identifier)
+            (arguments
+              (identifier)))
+          (identifier)))
+      (math_symbol)
+      (code
+        (field_access
+          (identifier)
+          (identifier))))))
+
+================================================================================
+A letter against a parenthesis is one operand
+================================================================================
+
+$ f(x)/2 $
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (equation
+    (math
+      (math_frac
+        (math_letter)
+        (math_delimited
+          (math_letter))
+        (math_number)))))
+
+================================================================================
+Strings and escapes in math
+================================================================================
+
+$ x "if" y \# z $
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (equation
+    (math
+      (math_letter)
+      (string)
+      (math_letter)
+      (escape)
+      (math_letter))))

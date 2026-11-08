@@ -1,0 +1,84 @@
+================================================================================
+Comments inside code blocks and argument lists
+================================================================================
+
+#let f(
+  x, // the value
+  /* a default */ y: 2,
+) = {
+  // leading remark
+  x + y /* trailing */
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (let_binding
+      (identifier)
+      (parameters
+        (identifier)
+        (line_comment)
+        (block_comment)
+        (named
+          (identifier)
+          (int)))
+      (code_block
+        (line_comment)
+        (binary
+          (identifier)
+          (identifier))
+        (block_comment)))))
+
+================================================================================
+Block comments nest
+================================================================================
+
+/* outer /* inner */ still outer */ text
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (block_comment)
+  (text))
+
+================================================================================
+A comment between a value and its method keeps the chain
+================================================================================
+
+#{
+  "abc"
+  // a remark
+  /* another */
+  .len()
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (code_block
+      (call
+        (field_access
+          (string)
+          (line_comment)
+          (block_comment)
+          (identifier))
+        (arguments)))))
+
+================================================================================
+Comment markers inside strings are strings
+================================================================================
+
+#let s = ("//", "/*", "*/")
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (let_binding
+      (identifier)
+      (array
+        (string)
+        (string)
+        (string)))))

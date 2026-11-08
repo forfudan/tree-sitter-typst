@@ -1,0 +1,20 @@
+# Typst's own parser, as a judge: which files of the corpus does Typst itself
+# parse without a syntax error? `script/baseline.sh` measures the grammar on
+# those, the way tree-sitter-mojo leaves out what Modular's parser rejects.
+#
+# Warning: **pin the version you read.** The grammar follows the typst-syntax it
+# was written against; a newer judge can reject or accept what this grammar
+# does not know about yet. Bump both together.
+[package]
+name = "typst-check"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+typst-syntax = "=0.15.1"
+tree-sitter = "0.25"
+tree-sitter-typst = { path = "../.." }
+
+# Its own workspace, so cargo never mistakes the grammar crate above for one.
+[workspace]

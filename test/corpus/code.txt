@@ -1,0 +1,433 @@
+================================================================================
+A function binding with a multi-line body
+================================================================================
+
+#let greet(name, greeting: "Hello") = {
+  let text = greeting + ", " + name
+  if name == "" {
+    return none
+  }
+  [#text!]
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (let_binding
+      (identifier)
+      (parameters
+        (identifier)
+        (named
+          (identifier)
+          (string)))
+      (code_block
+        (let_binding
+          (identifier)
+          (binary
+            (binary
+              (identifier)
+              (string))
+            (identifier)))
+        (conditional
+          (binary
+            (identifier)
+            (string))
+          (code_block
+            (return_statement
+              (none))))
+        (content_block
+          (code
+            (identifier))
+          (text))))))
+
+================================================================================
+Nested code and content blocks
+================================================================================
+
+#let card(title, body) = block[
+  #strong(title)
+  #{
+    let n = 0
+    for x in (1, 2, 3) {
+      n += x
+    }
+    [Sum: #n]
+  }
+]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (let_binding
+      (identifier)
+      (parameters
+        (identifier)
+        (identifier))
+      (call
+        (identifier)
+        (arguments
+          (content_block
+            (code
+              (call
+                (identifier)
+                (arguments
+                  (identifier))))
+            (code
+              (code_block
+                (let_binding
+                  (identifier)
+                  (int))
+                (for_loop
+                  (identifier)
+                  (array
+                    (int)
+                    (int)
+                    (int))
+                  (code_block
+                    (binary
+                      (identifier)
+                      (identifier))))
+                (content_block
+                  (text)
+                  (text)
+                  (code
+                    (identifier)))))))))))
+
+================================================================================
+A hash takes one atomic expression; calls and fields attach without a space
+================================================================================
+
+#x + 1 and #f (y) and #a.b.c(d)[e] and #x. Done.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (identifier))
+  (text)
+  (code
+    (identifier))
+  (text)
+  (code
+    (call
+      (field_access
+        (field_access
+          (identifier)
+          (identifier))
+        (identifier))
+      (arguments
+        (identifier)
+        (content_block
+          (text)))))
+  (text)
+  (code
+    (identifier))
+  (text))
+
+================================================================================
+Method chains go on across lines in a code block
+================================================================================
+
+#{
+  let words = "a b c"
+    .split(" ")
+    .map(w => upper(w))
+  words.join()
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (code_block
+      (let_binding
+        (identifier)
+        (call
+          (field_access
+            (call
+              (field_access
+                (string)
+                (identifier))
+              (arguments
+                (string)))
+            (identifier))
+          (arguments
+            (closure
+              (identifier)
+              (call
+                (identifier)
+                (arguments
+                  (identifier)))))))
+      (call
+        (field_access
+          (identifier)
+          (identifier))
+        (arguments)))))
+
+================================================================================
+Closures, destructuring and spread
+================================================================================
+
+#let add = (a, b: 0, ..rest) => a + b
+#let (x, y) = (1, 2)
+#{ (x, y) = (y, x); _ = add(..(1, 2)) }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (let_binding
+      (identifier)
+      (closure
+        (array
+          (identifier)
+          (named
+            (identifier)
+            (int))
+          (spread
+            (identifier)))
+        (binary
+          (identifier)
+          (identifier)))))
+  (code
+    (let_binding
+      (array
+        (identifier)
+        (identifier))
+      (array
+        (int)
+        (int))))
+  (code
+    (code_block
+      (destructuring_assignment
+        (array
+          (identifier)
+          (identifier))
+        (array
+          (identifier)
+          (identifier)))
+      (destructuring_assignment
+        (call
+          (identifier)
+          (arguments
+            (spread
+              (array
+                (int)
+                (int)))))))))
+
+================================================================================
+Numbers with units, and a float written with a trailing dot
+================================================================================
+
+#(1pt + 2.5em - 50% * 2fr, 90deg, 0xff, 1e3, .5, 1.)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (array
+      (binary
+        (binary
+          (numeric)
+          (numeric))
+        (binary
+          (numeric)
+          (numeric)))
+      (numeric)
+      (int)
+      (float)
+      (float)
+      (float))))
+
+================================================================================
+Dictionaries and named arguments
+================================================================================
+
+#let style = (fill: red, "inset": 4pt, ..base)
+#rect(width: 100%, stroke: (paint: blue, thickness: 1pt))
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (let_binding
+      (identifier)
+      (dict
+        (named
+          (identifier)
+          (identifier))
+        (named
+          (string)
+          (numeric))
+        (spread
+          (identifier)))))
+  (code
+    (call
+      (identifier)
+      (arguments
+        (named
+          (identifier)
+          (numeric))
+        (named
+          (identifier)
+          (dict
+            (named
+              (identifier)
+              (identifier))
+            (named
+              (identifier)
+              (numeric))))))))
+
+================================================================================
+Strings with escapes and CJK text
+================================================================================
+
+#let title = "排版\t系统 \"Typst\" \u{4E2D}"
+#text(lang: "zh")[#title 中文排版]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (let_binding
+      (identifier)
+      (string
+        (escape)
+        (escape)
+        (escape)
+        (escape))))
+  (code
+    (call
+      (identifier)
+      (arguments
+        (named
+          (identifier)
+          (string))
+        (content_block
+          (code
+            (identifier))
+          (text))))))
+
+================================================================================
+Statements after a hash end at the line break, and not before a dot
+================================================================================
+
+#let x = 1
+.foo is text
+#let y = 2; more text
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (let_binding
+      (identifier)
+      (int)))
+  (text)
+  (code
+    (let_binding
+      (identifier)
+      (int)))
+  (text))
+
+================================================================================
+While, break and continue
+================================================================================
+
+#{
+  let i = 0
+  while i < 10 {
+    i += 1
+    if calc.odd(i) { continue } else if i > 6 { break }
+  }
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (code_block
+      (let_binding
+        (identifier)
+        (int))
+      (while_loop
+        (binary
+          (identifier)
+          (int))
+        (code_block
+          (binary
+            (identifier)
+            (int))
+          (conditional
+            (call
+              (field_access
+                (identifier)
+                (identifier))
+              (arguments
+                (identifier)))
+            (code_block
+              (continue_statement))
+            (conditional
+              (binary
+                (identifier)
+                (int))
+              (code_block
+                (break_statement)))))))))
+
+================================================================================
+Conditionals with else on the next line inside a code block
+================================================================================
+
+#{
+  if true {
+    1
+  }
+  else {
+    2
+  }
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (code_block
+      (conditional
+        (bool)
+        (code_block
+          (int))
+        (code_block
+          (int))))))
+
+================================================================================
+Context and an embedded conditional with content blocks
+================================================================================
+
+#context text.lang and #if x [yes] else [no] and #for c in "ab" [#c]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (contextual
+      (field_access
+        (identifier)
+        (identifier))))
+  (text)
+  (code
+    (conditional
+      (identifier)
+      (content_block
+        (text))
+      (content_block
+        (text))))
+  (text)
+  (code
+    (for_loop
+      (identifier)
+      (string)
+      (content_block
+        (code
+          (identifier))))))

@@ -1,0 +1,10 @@
+/node_modules/
+/target/
+/build/
+*.log
+Cargo.lock
+
+# Warning: **`src/parser.c` is committed, never ignored.** It is generated, but
+# the whole tree-sitter ecosystem commits it: downstream (yumete's CI, a plain
+# `cargo build`) compiles it directly without node or tree-sitter-cli.
+# `src/scanner.c` is written by hand and is committed all the more.

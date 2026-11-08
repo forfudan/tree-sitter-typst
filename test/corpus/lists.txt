@@ -1,0 +1,130 @@
+================================================================================
+A list item lasts while the lines below are indented deeper
+================================================================================
+
+- first
+  continued
+  - nested
+- second
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (list_item
+    (list_marker)
+    (text)
+    (text)
+    (list_item
+      (list_marker)
+      (text)))
+  (list_item
+    (list_marker)
+    (text)))
+
+================================================================================
+Enum markers, numbered and plain
+================================================================================
+
++ one
+2. two
++ three
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (enum_item
+    (enum_marker)
+    (text))
+  (enum_item
+    (enum_marker)
+    (text))
+  (enum_item
+    (enum_marker)
+    (text)))
+
+================================================================================
+A term item, and a list in its description
+================================================================================
+
+/ Ligature: two letters joined
+/ Kerning: - left
+  - right
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (term_item
+    (term_marker)
+    (term
+      (text))
+    (text))
+  (term_item
+    (term_marker)
+    (term
+      (text))
+    (list_item
+      (list_marker)
+      (text))
+    (list_item
+      (list_marker)
+      (text))))
+
+================================================================================
+An item ends at the bracket that closes its block
+================================================================================
+
+#block[- a
+- b]
+after
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (call
+      (identifier)
+      (arguments
+        (content_block
+          (list_item
+            (list_marker)
+            (text))
+          (list_item
+            (list_marker)
+            (text))))))
+  (text))
+
+================================================================================
+A comment at the end of an item's line stays outside the item
+================================================================================
+
+- item // remark
+- next
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (list_item
+    (list_marker)
+    (text))
+  (line_comment)
+  (list_item
+    (list_marker)
+    (text)))
+
+================================================================================
+Markers right after an opening bracket start a list
+================================================================================
+
+#list[- a]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code
+    (call
+      (identifier)
+      (arguments
+        (content_block
+          (list_item
+            (list_marker)
+            (text)))))))

@@ -1,0 +1,19 @@
+{
+  "grammars": [
+    {
+      "name": "typst",
+      "camelcase": "Typst",
+      "scope": "source.typst",
+      "path": ".",
+      "file-types": [
+        "typ"
+      ],
+      "injection-regex": "^(typ|typst)$"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Typst grammar for tree-sitter"
+  }
+}
