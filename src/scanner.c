@@ -998,6 +998,14 @@ static bool scan_markup(Scanner *s, TSLexer *lexer, const bool *valid) {
     case '*':
       if (valid[STAR]) {
         advance(lexer);
+        // `*/` outside a comment is one token in Typst's lexer, an error, so
+        // it neither delimits strong nor lets its `/` open a comment. It is
+        // read as text here.
+        if (lexer->lookahead == '/' && valid[TEXT]) {
+          advance(lexer);
+          lexer->mark_end(lexer);
+          return emit(s, lexer, TEXT);
+        }
         lexer->mark_end(lexer);
         return emit(s, lexer, STAR);
       }
