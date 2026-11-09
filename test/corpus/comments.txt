@@ -82,3 +82,18 @@ Comment markers inside strings are strings
         (string)
         (string)
         (string)))))
+
+================================================================================
+A stray comment end in markup opens neither strong nor a comment
+================================================================================
+
+*/*x*
+next line
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (text)
+  (strong
+    (text))
+  (text))
